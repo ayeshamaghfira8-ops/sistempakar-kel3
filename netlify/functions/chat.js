@@ -23,7 +23,9 @@ exports.handler = async function(event) {
         }),
       }
     );
-
+console.log('Gemini response:', JSON.stringify(data));
+const text = data.candidates?.[0]?.content?.parts?.[0]?.text
+      || 'Maaf, saya tidak bisa menjawab saat ini.';
     const data = await response.json();
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text
       || 'Maaf, saya tidak bisa menjawab saat ini.';
