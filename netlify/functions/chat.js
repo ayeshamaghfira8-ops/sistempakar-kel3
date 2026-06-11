@@ -25,7 +25,6 @@ exports.handler = async function(event) {
     );
 
     const data = await response.json();
-    console.log('Groq response:', JSON.stringify(data));
     const text = data.choices?.[0]?.message?.content
       || 'Maaf, saya tidak bisa menjawab saat ini.';
 
@@ -35,7 +34,6 @@ exports.handler = async function(event) {
       body: JSON.stringify({ text }),
     };
   } catch (err) {
-    console.log('Error:', err.message);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: err.message }),
