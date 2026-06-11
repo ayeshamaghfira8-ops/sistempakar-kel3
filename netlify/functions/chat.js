@@ -5,26 +5,28 @@ exports.handler = async function(event) {
   try {
     const { messages, system } = JSON.parse(event.body);
 
-    const contents = messages.map(m => ({
-      role: m.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: m.content }]
-    }));
-
     const response = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=' + process.env.GEMINI_API_KEY,
+      'https://api.groq.com/openai/v1/chat/completions',
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + process.env.GROQ_API_KEY,
+        },
         body: JSON.stringify({
-          system_instruction: { parts: [{ text: system }] },
-          contents,
+          model: 'llama-3.1-8b-instant',
+          messages: [
+            { role: 'system', content: system },
+            ...messages
+          ],
+          max_tokens: 500,
         }),
       }
     );
 
     const data = await response.json();
-    console.log('Gemini response:', JSON.stringify(data));
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text
+    console.log('Groq response:', JSON.stringify(data));
+    const text = data.choices?.[0]?.message?.content
       || 'Maaf, saya tidak bisa menjawab saat ini.';
 
     return {
