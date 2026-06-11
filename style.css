@@ -1,0 +1,936 @@
+/* ============================================================
+   STYLE.CSS — Sistem Pakar Penyakit Pencernaan
+   Tema: Soft Pastel Modern
+   Font: Pacifico (heading) + Nunito (body)
+   ============================================================ */
+
+/* ===== CSS VARIABLES — Palet Pastel ===== */
+:root {
+  /* Warna primer pastel */
+  --peach:       #FFCBA4;
+  --peach-dark:  #FFB07C;
+  --mint:        #B5EAD7;
+  --mint-dark:   #88D5BC;
+  --lavender:    #C7CEEA;
+  --lavender-dark:#A8B2DE;
+  --baby-blue:   #AED9E0;
+  --blush:       #FFB7B2;
+  --lemon:       #FFDAC1;
+  --lilac:       #E2BFE6;
+
+  /* Warna teks */
+  --text-dark:   #3D3D3D;
+  --text-mid:    #6B6B6B;
+  --text-light:  #9B9B9B;
+  --white:       #FFFFFF;
+
+  /* Background halaman */
+  --bg-main:     #FFF8F3;
+  --bg-card:     #FFFDF9;
+
+  /* Warna per penyakit */
+  --color-gerd:       #FFB5A7;  /* salmon pastel */
+  --color-sembelit:   #D4A5A5;  /* mauve pastel  */
+  --color-ibs:        #A8D8EA;  /* biru pastel   */
+  --color-apendisitis:#FFDDD2;  /* peach pastel  */
+  --color-maag:       #F7D6E0;  /* pink pastel   */
+
+  /* Shadow */
+  --shadow-sm:   0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md:   0 6px 20px rgba(0,0,0,0.10);
+  --shadow-lg:   0 12px 40px rgba(0,0,0,0.12);
+
+  /* Border radius */
+  --radius-sm:   12px;
+  --radius-md:   20px;
+  --radius-lg:   32px;
+  --radius-pill: 999px;
+
+  /* Transisi */
+  --transition:  0.3s ease;
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== APP WRAPPER ===== */
+.app-wrapper {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* ===== SISTEM HALAMAN (PAGE SWITCHING) ===== */
+.page {
+  display: none;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.page.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== DEKORASI BACKGROUND ===== */
+.deco {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.45;
+}
+
+.deco-1 {
+  width: 340px; height: 340px;
+  background: radial-gradient(circle, var(--peach), transparent 70%);
+  top: -100px; left: -100px;
+}
+.deco-2 {
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, var(--lavender), transparent 70%);
+  bottom: -80px; right: -80px;
+}
+.deco-3 {
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, var(--mint), transparent 70%);
+  top: 50%; right: -60px;
+  transform: translateY(-50%);
+}
+.deco-4 {
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, var(--lemon), transparent 70%);
+  bottom: 60px; left: -60px;
+}
+
+/* ===================================================
+   PAGE 1 — LANDING
+   =================================================== */
+
+.landing-card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 600px;
+  width: 90%;
+  margin: 60px auto;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 48px 40px 40px;
+  box-shadow: var(--shadow-lg);
+  border: 2px solid rgba(255, 203, 164, 0.5);
+}
+
+.badge {
+  background: var(--peach);
+  color: var(--text-dark);
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 6px 18px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 20px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: var(--shadow-sm);
+}
+
+.landing-title {
+  font-family: 'Pacifico', cursive;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  line-height: 1.8;
+  color: var(--text-dark);
+  margin-bottom: 16px;
+  padding: 5px 0;
+  background: linear-gradient(135deg, #FF7B6B, #A78BFA);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.landing-sub {
+  font-size: 1rem;
+  color: var(--text-mid);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.landing-source {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 24px;
+  font-style: italic;
+}
+
+/* ===== CHIP PENYAKIT & TOOLTIP LOGIC ===== */
+.disease-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+/* Base Wrapper untuk Tooltip */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.chip {
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  font-weight: 800;
+  font-size: 0.82rem;
+  cursor: help;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition);
+  display: inline-block;
+}
+
+.chip:hover {
+  transform: translateY(-2px);
+}
+
+/* Warna masing-masing chip */
+.chip-gerd        { background: var(--color-gerd);       color: #7A3A33; }
+.chip-ibs         { background: var(--color-ibs);        color: #2A5F72; }
+.chip-maag        { background: var(--color-maag);       color: #8A3A55; }
+.chip-sembelit    { background: var(--color-sembelit);   color: #5A2A2A; }
+.chip-apendistis  { background: var(--color-apendisitis);color: #7A4A33; }
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 240px;
+  background-color: #4A3E3D;   
+  color: #FFFFFF;
+  text-align: center;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.4;
+  font-family: 'Nunito', sans-serif;
+  box-shadow: var(--shadow-md);
+  
+  position: absolute;
+  z-index: 99;
+  bottom: 135%;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  /* Efek animasi fade-in */
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #4A3E3D transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+/* ===== TOMBOL PRIMER (CTA) ===== */
+.btn-primary {
+  background: linear-gradient(135deg, var(--peach-dark), #F7A76C);
+  color: var(--white);
+  border: none;
+  padding: 16px 48px;
+  border-radius: var(--radius-pill);
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(255,176,124,0.5);
+  transition: transform var(--transition), box-shadow var(--transition);
+  letter-spacing: 0.02em;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(255,176,124,0.6);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.disclaimer {
+  margin-top: 24px;
+  font-size: 0.75rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  max-width: 400px;
+  background: #FFF0E8;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--peach-dark);
+}
+
+/* ===================================================
+   PAGE 2 — GEJALA
+   =================================================== */
+
+.gejala-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.page-title {
+  font-family: 'Pacifico', cursive;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  color: var(--text-dark);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.page-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-mid);
+  font-weight: 600;
+}
+
+.validation-msg {
+  display: none;
+  background: #FFE8E6;
+  color: #D64B3C;
+  border: 1.5px solid #F5A99F;
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-8px); }
+  40%       { transform: translateX(8px); }
+  60%       { transform: translateX(-5px); }
+  80%       { transform: translateX(5px); }
+}
+
+.gejala-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 36px;
+}
+
+.gejala-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+  position: relative;
+}
+
+.gejala-item:hover {
+  border-color: var(--peach-dark);
+  background: #FFF5EE;
+  transform: translateX(4px);
+}
+
+.gejala-item:has(input:checked) {
+  border-color: var(--peach-dark);
+  background: linear-gradient(135deg, #FFF0E4, #FFE8D6);
+  box-shadow: 0 4px 16px rgba(255,176,124,0.25);
+}
+
+.gejala-item input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0; height: 0;
+}
+
+.checkmark {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  border: 2.5px solid var(--peach-dark);
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  transition: all var(--transition);
+  position: relative;
+}
+
+.gejala-item input:checked ~ .checkmark {
+  background: var(--peach-dark);
+  border-color: var(--peach-dark);
+}
+
+.gejala-item input:checked ~ .checkmark::after {
+  content: '✓';
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.gejala-text {
+  font-size: 0.92rem;
+  color: var(--text-dark);
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.btn-center {
+  display: flex;
+  justify-content: center;
+}
+
+/* ===================================================
+   PAGE 3 — HASIL DIAGNOSA
+   =================================================== */
+
+.hasil-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+}
+
+.result-section {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-md);
+  border: 2px solid rgba(255, 203, 164, 0.3);
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 2px dashed var(--peach);
+}
+
+.selected-gejala-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.selected-gejala-tag {
+  background: var(--mint);
+  color: #2E6B57;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 0.82rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+
+.percentage-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pct-card {
+  border-radius: var(--radius-sm);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition);
+}
+
+.pct-card:hover {
+  transform: translateY(-2px);
+}
+
+.pct-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pct-name {
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--text-dark);
+}
+
+.pct-value {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--text-dark);
+}
+
+.pct-bar-bg {
+  width: 100%;
+  height: 12px;
+  background: rgba(0,0,0,0.08);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.pct-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  transition: width 1s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.pct-card.rank-1 {
+  border: 2.5px solid rgba(255,176,124,0.6);
+}
+
+.rank-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--peach-dark);
+  color: var(--white);
+}
+
+.disease-explanations {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.disease-card {
+  border-radius: var(--radius-sm);
+  padding: 22px 24px;
+  box-shadow: var(--shadow-sm);
+  border-left: 6px solid transparent;
+}
+
+.disease-card h4 {
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.disease-card .label {
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-light);
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+
+.disease-card p,
+.disease-card li {
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  line-height: 1.7;
+}
+
+.disease-card ul {
+  padding-left: 18px;
+}
+
+/* ===== WARNA PER PENYAKIT ===== */
+.theme-gerd {
+  background: #FFF5F3;
+  border-left-color: #FF9A8B;
+}
+.theme-gerd .pct-bar-fill { background: linear-gradient(90deg, #FF9A8B, #FFB5A7); }
+.theme-gerd.pct-card      { background: #FFF5F3; }
+
+.theme-sembelit {
+  background: #FBF3F3;
+  border-left-color: #D4A5A5;
+}
+.theme-sembelit .pct-bar-fill { background: linear-gradient(90deg, #C48B8B, #D4A5A5); }
+.theme-sembelit.pct-card      { background: #FBF3F3; }
+
+.theme-ibs {
+  background: #F3F9FB;
+  border-left-color: #7BC8D8;
+}
+.theme-ibs .pct-bar-fill { background: linear-gradient(90deg, #7BC8D8, #A8D8EA); }
+.theme-ibs.pct-card      { background: #F3F9FB; }
+
+.theme-apendisitis {
+  background: #FFF8F4;
+  border-left-color: #FFA07A;
+}
+.theme-apendisitis .pct-bar-fill { background: linear-gradient(90deg, #FFA07A, #FFDDD2); }
+.theme-apendisitis.pct-card      { background: #FFF8F4; }
+
+.theme-maag {
+  background: #FFF4F7;
+  border-left-color: #E888AA;
+}
+.theme-maag .pct-bar-fill { background: linear-gradient(90deg, #E888AA, #F7D6E0); }
+.theme-maag.pct-card      { background: #FFF4F7; }
+
+/* ===== TOMBOL AKSI (PAGE 3) ===== */
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.btn-secondary {
+  background: var(--white);
+  color: var(--text-dark);
+  border: 2px solid var(--peach-dark);
+  padding: 13px 26px;
+  border-radius: var(--radius-pill);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover {
+  background: var(--peach);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-save {
+  background: linear-gradient(135deg, var(--mint-dark), #5DBEAA);
+  color: var(--white);
+  border: none;
+  padding: 13px 26px;
+  border-radius: var(--radius-pill);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: 0 4px 16px rgba(136,213,188,0.5);
+}
+
+.btn-save:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(136,213,188,0.6);
+}
+
+.btn-save.loading {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .landing-card {
+    padding: 36px 24px 32px;
+    margin: 30px auto;
+  }
+
+  .gejala-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-secondary,
+  .btn-save {
+    width: 100%;
+    text-align: center;
+  }
+
+  .hasil-container,
+  .gejala-container {
+    padding: 24px 16px 48px;
+  }
+
+  .result-section {
+    padding: 20px 16px;
+  }
+}
+
+/* ===== SCROLLBAR CUSTOM ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FFF0E8;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--peach-dark);
+  border-radius: 99px;
+}
+/* ===== TOMBOL KEMBALI (BACK BUTTON) ===== */
+.btn-back {
+  background: var(--white);
+  color: var(--text-mid);
+  border: 2px solid var(--peach);
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: absolute; /* Membuat posisi melayang di kiri atas container */
+  top: 40px;
+  left: 24px;
+  transition: all var(--transition);
+  box-shadow: var(--shadow-sm);
+  z-index: 10;
+}
+
+.btn-back:hover {
+  background: var(--peach);
+  color: var(--text-dark);
+  transform: translateX(-3px); /* Efek bergeser sedikit ke kiri saat di-hover */
+  box-shadow: var(--shadow-md);
+}
+
+/* Responsif: Atur ulang posisi tombol di layar HP agar tidak bertabrakan */
+@media (max-width: 600px) {
+  .btn-back {
+    position: static; /* Kembali ke posisi normal atas-bawah */
+    margin-bottom: 20px;
+    display: inline-flex;
+  }
+}
+/* ===== CHATBOT WIDGET ===== */
+#chat-bubble {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--peach-dark), #F7A76C);
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(255,176,124,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#chat-bubble:hover {
+  transform: scale(1.08);
+  box-shadow: 0 10px 28px rgba(255,176,124,0.65);
+}
+
+#chat-window {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 340px;
+  max-height: 500px;
+  border-radius: 20px;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-lg);
+  border: 1.5px solid rgba(255,203,164,0.5);
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 999;
+  animation: fadeInUp 0.3s ease;
+}
+
+#chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, var(--peach-dark), #F7A76C);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.95rem;
+  font-family: 'Nunito', sans-serif;
+}
+
+#chat-header button {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 800;
+  padding: 0;
+  line-height: 1;
+}
+
+#chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 200px;
+  max-height: 320px;
+}
+
+.chat-msg {
+  max-width: 82%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  font-family: 'Nunito', sans-serif;
+}
+
+.chat-msg-user {
+  background: linear-gradient(135deg, var(--peach-dark), #F7A76C);
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+.chat-msg-bot {
+  background: #F0F0F0;
+  color: var(--text-dark);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+
+.chat-loading {
+  display: flex;
+  gap: 5px;
+  padding: 12px 16px;
+  align-items: center;
+}
+
+.chat-loading span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--peach-dark);
+  animation: dotBounce 1.2s infinite ease-in-out;
+}
+
+.chat-loading span:nth-child(2) { animation-delay: 0.2s; }
+.chat-loading span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: scale(0.7); opacity: 0.5; }
+  40%           { transform: scale(1);   opacity: 1; }
+}
+
+#chat-inputarea {
+  display: flex;
+  gap: 8px;
+  padding: 12px 14px;
+  border-top: 1.5px solid rgba(255,203,164,0.35);
+  background: var(--bg-card);
+}
+
+#chat-input {
+  flex: 1;
+  border: 1.5px solid var(--peach);
+  border-radius: 99px;
+  padding: 9px 16px;
+  font-size: 0.85rem;
+  font-family: 'Nunito', sans-serif;
+  outline: none;
+  background: var(--white);
+  color: var(--text-dark);
+  transition: border-color 0.2s;
+}
+
+#chat-input:focus {
+  border-color: var(--peach-dark);
+}
+
+#chat-send {
+  background: linear-gradient(135deg, var(--peach-dark), #F7A76C);
+  color: #fff;
+  border: none;
+  border-radius: 99px;
+  padding: 9px 18px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+#chat-send:hover { transform: scale(1.04); }
+#chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+@media (max-width: 600px) {
+  #chat-window {
+    width: calc(100vw - 32px);
+    right: 16px;
+    bottom: 16px;
+  }
+  #chat-bubble {
+    right: 16px;
+    bottom: 16px;
+  }
+}

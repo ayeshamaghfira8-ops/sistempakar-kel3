@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- ===== META & CHARSET ===== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> Let's Diagnose Your Gut Problems!</title>
+
+  <!-- ===== GOOGLE FONTS ===== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- ===== STYLESHEET UTAMA ===== -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- ===== STYLE TAMBAHAN UNTUK TOOLTIP PENGERTIAN ===== -->
+  <style>
+    /* Mengatur container agar chip/tombol tersusun rapi */
+    .disease-chips {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    /* Base pembungkus tooltip */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Memastikan cursor berubah jadi tanda tanya/pointer saat diarahkan ke chip */
+    .tooltip .chip {
+      cursor: help;
+      display: inline-block;
+    }
+
+    /* Style Kotak Window Pengertian (Sembunyi secara default) */
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 240px;                 /* Lebar window teks */
+      background-color: #4A3E3D;   /* Warna box cokelat gelap estetik */
+      color: #FFFFFF;              /* Warna teks putih */
+      text-align: center;
+      border-radius: 10px;         /* Sudut membulat halus */
+      padding: 10px 12px;          /* Jarak teks ke tepi kotak */
+      font-size: 13px;
+      font-weight: normal;
+      line-height: 1.4;
+      font-family: 'Nunito', sans-serif;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15); /* Efek bayangan halus */
+      
+      /* Mengatur posisi melayang tepat di ATAS chip */
+      position: absolute;
+      z-index: 99;
+      bottom: 135%;                /* Jarak vertikal di atas chip */
+      left: 50%;
+      transform: translateX(-50%); /* Pas di tengah-tengah secara horizontal */
+      
+      /* Efek animasi pudar (Fade-In) */
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    /* Efek Panah Kecil di bagian bawah window tooltip */
+    .tooltip .tooltiptext::after {
+      content: "";
+      position: absolute;
+      top: 100%;                   /* Tepat di bawah kotak */
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px;
+      border-style: solid;
+      border-color: #4A3E3D transparent transparent transparent;
+    }
+
+    /* MEMUNCULKAN WINDOW SAAT CHIP DI-HOVER */
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+      transform: translateX(-50%) translateY(-5px); /* Efek naik halus */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       WRAPPER UTAMA — semua halaman ada di sini
+  ============================================================ -->
+  <div class="app-wrapper">
+
+    <!-- ==================== PAGE 1 : LANDING ==================== -->
+    <section class="page active" id="page-landing">
+
+      <div class="deco deco-1"></div>
+      <div class="deco deco-2"></div>
+      <div class="deco deco-3"></div>
+
+      <div class="landing-card">
+
+        <div class="badge">by Kelompok 3 XI.1</div>
+
+        <h1 class="landing-title"> Let's Diagnose<br/>Your Gut Problems!</h1>
+
+        <p class="landing-sub">Mari kenali kondisi pencernaanmu dengan baik!</p>
+
+        <p class="landing-source">
+          📚 <strong>Our Source:</strong> Dr. dr. Dadan Setiawan, Sp.PD.
+        </p>
+
+        <!-- MODIFIKASI: Ditambahkan Tooltip Pengertian Singkat -->
+        <div class="disease-chips">
+          
+          <div class="tooltip">
+            <span class="chip chip-gerd">🔥 GERD</span>
+            <span class="tooltiptext">Asam lambung naik ke kerongkongan, bikin dada terasa panas atau terbakar (heartburn).</span>
+          </div>
+
+          <div class="tooltip">
+            <span class="chip chip-ibs">🌀 IBS</span>
+            <span class="tooltiptext">Gangguan jangka panjang pada usus besar yang bikin perut sering kram, kembung, diare, atau sembelit.</span>
+          </div>
+
+          <div class="tooltip">
+            <span class="chip chip-maag">💛 Maag</span>
+            <span class="tooltiptext">Peradangan atau iritasi pada dinding lambung, biasanya perih di ulu hati sebelum atau setelah makan.</span>
+          </div>
+
+          <div class="tooltip">
+            <span class="chip chip-sembelit">🟤 Sembelit</span>
+            <span class="tooltiptext">Kondisi buang air besar yang tidak lancar, jarang, atau tekstur fesesnya keras dan kering.</span>
+          </div>
+
+          <div class="tooltip">
+            <span class="chip chip-apendistis">🔴 Apendisitis</span>
+            <span class="tooltiptext">Radang usus buntu akut yang memicu nyeri hebat di perut kanan bawah. Butuh penanganan medis segera!</span>
+          </div>
+
+        </div>
+
+        <button class="btn-primary" id="btn-start">
+          Let's Start! 🚀
+        </button>
+
+        <p class="disclaimer">
+          ⚠️ Hasil diagnosa ini bersifat informatif dan bukan pengganti
+          konsultasi dengan tenaga medis profesional.
+        </p>
+
+      </div>
+    </section>
+
+
+    <section class="page" id="page-gejala">
+
+      <div class="deco deco-1"></div>
+      <div class="deco deco-4"></div>
+
+      <div class="gejala-container">
+
+        <button class="btn-back" id="btn-back-to-landing">
+          ← Kembali
+        </button>
+
+        <div class="page-header">
+          <h2 class="page-title">🩻 Pilih Gejalamu</h2>
+          <p class="page-subtitle">Centang semua gejala yang kamu rasakan saat ini</p>
+        </div>
+
+        <div class="validation-msg" id="validation-msg">
+          ⚠️ Kamu belum memilih gejala apapun! Pilih minimal 1 gejala dulu ya.
+        </div>
+
+        <div class="gejala-grid" id="gejala-grid">
+
+          <label class="gejala-item">
+            <input type="checkbox" name="gejala" value="GA" />
+            <span class="checkmark"></span>
+            <span class="gejala-text">
+              🔥 Rasa panas / nyeri di dada (heartburn) dan asam terasa naik ke kerongkongan
+            </span>
+          </label>
+
+          <label class="gejala-item">
+            <input type="checkbox" name="gejala" value="GB" />
+            <span class="checkmark"></span>
+            <span class="gejala-text">
+              😣 Nyeri atau perih di ulu hati, mual, dan perut terasa kembung
+            </span>
+          </label>
+
+          <label class="gejala-item">
+            <input type="checkbox" name="gejala" value="GC" />
+            <span class="checkmark"></span>
+            <span class="gejala-text">
+              🛌 Pola makan tidak teratur dan / atau langsung berbaring setelah makan
+            </span>
+          </label>
+
+          <label class="gejala-item">
+            <input type="checkbox" name="gejala" value="GD" />
+            <span class="checkmark"></span>
+            <span class="gejala-text">
+              🍔 Gaya hidup tidak sehat: sering stres, konsumsi kopi / alkohol / rokok / makanan pedas & asam berlebihan
+            </span>
+          </label>
+
+          <label class="gejala-item">
+            <input type="checkbox" name="gejala" value="GE" />
+            <span class="checkmark"></span>
+            <span class="gejala-text">
+              💊 Rutin mengonsumsi obat-obatan yang dapat mengiritasi lambung atau memperlambat gerak usus
+            </span>
+          </label>
+
+          <label class="gejala-item">
+            <input type="checkbox" name="gejala" value="GF" />
+            <span class="checkmark"></span>
+            <span class="gejala-text">
+              🚽 BAB kurang dari 3 kali seminggu dan / atau sulit BAB disertai kembung & begah
+            </span>
+          </label>
+
+          <label class="gejala-item">
+            <input type="checkbox" name="gejala" value="GG" />
+            <span class="checkmark"></span>
+            <span class="gejala-text">
+              💧 Kurang minum air putih dan kurang konsumsi makanan berserat setiap harinya
+            </span>
+          </label>
+
+          <label class="gejala-item">
+            <input type="checkbox" name="gejala" value="GH" />
+            <span class="checkmark"></span>
+            <span class="gejala-text">
+              🔄 Nyeri perut berkurang setelah BAB dan / atau pola BAB yang berubah-ubah
+            </span>
+          </label>
+
+          <label class="gejala-item">
+            <input type="checkbox" name="gejala" value="GI" />
+            <span class="checkmark"></span>
+            <span class="gejala-text">
+              💦 Sering mengalami diare berulang yang tidak disertai darah
+            </span>
+          </label>
+
+          <label class="gejala-item">
+            <input type="checkbox" name="gejala" value="GJ" />
+            <span class="checkmark"></span>
+            <span class="gejala-text">
+              📍 Nyeri berpindah dari pusar ke perut kanan bawah dan semakin hebat saat bergerak, ditekan, atau batuk
+            </span>
+          </label>
+
+          <label class="gejala-item">
+            <input type="checkbox" name="gejala" value="GK" />
+            <span class="checkmark"></span>
+            <span class="gejala-text">
+              🤢 Mual, demam ringan, dan nafsu makan menurun drastis
+            </span>
+          </label>
+
+          <label class="gejala-item">
+            <input type="checkbox" name="gejala" value="GL" />
+            <span class="checkmark"></span>
+            <span class="gejala-text">
+              🔴 Terdapat tanda peradangan: pada dinding lambung atau pada area usus buntu
+            </span>
+          </label>
+
+        </div><div class="btn-center">
+          <button class="btn-primary" id="btn-diagnosa">
+            Ayo Diagnosa! 🔍
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==================== PAGE 3 : HASIL ==================== -->
+    <section class="page" id="page-hasil">
+
+      <div class="deco deco-2"></div>
+      <div class="deco deco-3"></div>
+
+      <div class="hasil-container" id="hasil-container">
+
+        <div class="page-header">
+          <h2 class="page-title">📊 Hasil Diagnosa</h2>
+          <p class="page-subtitle">Berdasarkan gejala yang kamu pilih</p>
+        </div>
+
+        <!-- Gejala yang dipilih user -->
+        <div class="result-section">
+          <h3 class="section-title">✅ Gejala yang Kamu Pilih</h3>
+          <div class="selected-gejala-list" id="selected-gejala-list"></div>
+        </div>
+
+        <!-- Persentase 3 teratas -->
+        <div class="result-section">
+          <h3 class="section-title">📈 Persentase Kemungkinan (3 Teratas)</h3>
+          <div class="percentage-cards" id="percentage-cards"></div>
+        </div>
+
+        <!-- Penjelasan penyakit -->
+        <div class="result-section">
+          <h3 class="section-title">🏥 Penjelasan Penyakit</h3>
+          <div class="disease-explanations" id="disease-explanations"></div>
+        </div>
+
+        <!-- Tombol aksi -->
+        <div class="action-buttons">
+          <button class="btn-secondary" id="btn-home">🏠 Halaman Utama</button>
+          <button class="btn-secondary" id="btn-ulangi">🔄 Ulangi Diagnosa</button>
+          <button class="btn-save" id="btn-save">💾 Save Diagnosa</button>
+        </div>
+
+      </div>
+    </section>
+
+  </div><!-- /app-wrapper -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <!-- ===== CHATBOT WIDGET ===== -->
+<button id="chat-bubble" aria-label="Buka chatbot">
+  💬
+</button>
+
+<div id="chat-window" style="display:none;">
+  <div id="chat-header">
+    <span>🩺 Asisten Pencernaan</span>
+    <button id="chat-close" aria-label="Tutup chat">✕</button>
+  </div>
+  <div id="chat-messages"></div>
+  <div id="chat-inputarea">
+    <input id="chat-input" type="text" placeholder="Tanya tentang penyakit pencernaanmu..." autocomplete="off" />
+    <button id="chat-send">Kirim</button>
+  </div>
+</div>
+  <script src="script.js"></script>
+</body>
+</html>
