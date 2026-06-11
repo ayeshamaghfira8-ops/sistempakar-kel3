@@ -2,11 +2,9 @@ exports.handler = async function(event) {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
-
   try {
     const { messages, system } = JSON.parse(event.body);
 
-    // Konversi format riwayat chat ke format Gemini
     const contents = messages.map(m => ({
       role: m.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: m.content }]
@@ -23,10 +21,9 @@ exports.handler = async function(event) {
         }),
       }
     );
-console.log('Gemini response:', JSON.stringify(data));
-const text = data.candidates?.[0]?.content?.parts?.[0]?.text
-      || 'Maaf, saya tidak bisa menjawab saat ini.';
+
     const data = await response.json();
+    console.log('Gemini response:', JSON.stringify(data));
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text
       || 'Maaf, saya tidak bisa menjawab saat ini.';
 
@@ -36,9 +33,11 @@ const text = data.candidates?.[0]?.content?.parts?.[0]?.text
       body: JSON.stringify({ text }),
     };
   } catch (err) {
+    console.log('Error:', err.message);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: err.message }),
     };
   }
+};
 };
